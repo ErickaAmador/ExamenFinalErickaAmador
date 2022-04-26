@@ -1,6 +1,7 @@
 using Examen.Data;
 using Examen.Pages.Interfaces;
 using Examen.Pages.Servicios;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -18,6 +19,10 @@ builder.Services.AddSingleton(cadenaConexion);
 builder.Services.AddScoped<IUsuarioServicio, UsuarioServicio>();
 
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+builder.Services.AddHttpContextAccessor();
+
+
 
 var app = builder.Build();
 
@@ -33,9 +38,14 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
+app.UseAuthorization();  //AGREAGADO
+app.UseAuthentication(); //AGREAGADO
+
 app.UseRouting();
 
 app.MapBlazorHub();
+app.MapControllers(); //AGREAGADO
+
 app.MapFallbackToPage("/_Host");
 
 app.Run();

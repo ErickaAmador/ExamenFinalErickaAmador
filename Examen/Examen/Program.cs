@@ -1,4 +1,6 @@
 using Examen.Data;
+using Examen.Pages.Interfaces;
+using Examen.Pages.Servicios;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -8,6 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+
+
+MySQLConfiguration cadenaConexion = new MySQLConfiguration(builder.Configuration.GetConnectionString("MySQL"));
+builder.Services.AddSingleton(cadenaConexion);
+
+builder.Services.AddScoped<IUsuarioServicio, UsuarioServicio>();
+
+
 
 var app = builder.Build();
 
